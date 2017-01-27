@@ -1,0 +1,69 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : Processes
+### Category3 : Processes and Threads
+### Description : Returns information about all the processes running on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_Process","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Command Line: $objItem->{CommandLine}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Creation Date: $objItem->{CreationDate}\n";
+      print "CS Creation Class Name: $objItem->{CSCreationClassName}\n";
+      print "CS Name: $objItem->{CSName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Executable Path: $objItem->{ExecutablePath}\n";
+      print "Execution State: $objItem->{ExecutionState}\n";
+      print "Handle: $objItem->{Handle}\n";
+      print "Handle Count: $objItem->{HandleCount}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Kernel Mode Time: $objItem->{KernelModeTime}\n";
+      print "Maximum Working Set Size: $objItem->{MaximumWorkingSetSize}\n";
+      print "Minimum Working Set Size: $objItem->{MinimumWorkingSetSize}\n";
+      print "Name: $objItem->{Name}\n";
+      print "OS Creation Class Name: $objItem->{OSCreationClassName}\n";
+      print "OS Name: $objItem->{OSName}\n";
+      print "Other Operation Count: $objItem->{OtherOperationCount}\n";
+      print "Other Transfer Count: $objItem->{OtherTransferCount}\n";
+      print "Page Faults: $objItem->{PageFaults}\n";
+      print "Page File Usage: $objItem->{PageFileUsage}\n";
+      print "Parent Process Id: $objItem->{ParentProcessId}\n";
+      print "Peak Page File Usage: $objItem->{PeakPageFileUsage}\n";
+      print "Peak Virtual Size: $objItem->{PeakVirtualSize}\n";
+      print "Peak Working Set Size: $objItem->{PeakWorkingSetSize}\n";
+      print "Priority: $objItem->{Priority}\n";
+      print "Private Page Count: $objItem->{PrivatePageCount}\n";
+      print "Process Id: $objItem->{ProcessId}\n";
+      print "Quota NonPaged Pool Usage: $objItem->{QuotaNonPagedPoolUsage}\n";
+      print "Quota Paged Pool Usage: $objItem->{QuotaPagedPoolUsage}\n";
+      print "Quota Peak NonPaged Pool Usage: $objItem->{QuotaPeakNonPagedPoolUsage}\n";
+      print "Quota Peak Paged Pool Usage: $objItem->{QuotaPeakPagedPoolUsage}\n";
+      print "Read Operation Count: $objItem->{ReadOperationCount}\n";
+      print "Read Transfer Count: $objItem->{ReadTransferCount}\n";
+      print "Session Id: $objItem->{SessionId}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Termination Date: $objItem->{TerminationDate}\n";
+      print "Thread Count: $objItem->{ThreadCount}\n";
+      print "User Mode Time: $objItem->{UserModeTime}\n";
+      print "Virtual Size: $objItem->{VirtualSize}\n";
+      print "Windows Version: $objItem->{WindowsVersion}\n";
+      print "Working Set Size: $objItem->{WorkingSetSize}\n";
+      print "Write Operation Count: $objItem->{WriteOperationCount}\n";
+      print "Write Transfer Count: $objItem->{WriteTransferCount}\n";
+      print "\n";
+}

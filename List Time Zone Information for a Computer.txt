@@ -1,0 +1,48 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : Dates and Times
+### Category3 : 
+### Description : Retrieve information about the time zone configured on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_TimeZone","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Bias: $objItem->{Bias}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Daylight Bias: $objItem->{DaylightBias}\n";
+      print "Daylight Day: $objItem->{DaylightDay}\n";
+      print "Daylight DayO f Week: $objItem->{DaylightDayOfWeek}\n";
+      print "Daylight Hour: $objItem->{DaylightHour}\n";
+      print "Daylight Millisecond: $objItem->{DaylightMillisecond}\n";
+      print "Daylight Minute: $objItem->{DaylightMinute}\n";
+      print "Daylight Month: $objItem->{DaylightMonth}\n";
+      print "Daylight Name: $objItem->{DaylightName}\n";
+      print "Daylight Second: $objItem->{DaylightSecond}\n";
+      print "Daylight Year: $objItem->{DaylightYear}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Standard Bias: $objItem->{StandardBias}\n";
+      print "Standard Day: $objItem->{StandardDay}\n";
+      print "Standard Day Of Week: $objItem->{StandardDayOfWeek}\n";
+      print "Standard Hour: $objItem->{StandardHour}\n";
+      print "Standard Millisecond: $objItem->{StandardMillisecond}\n";
+      print "Standard Minute: $objItem->{StandardMinute}\n";
+      print "Standard Month: $objItem->{StandardMonth}\n";
+      print "Standard Name: $objItem->{StandardName}\n";
+      print "Standard Second: $objItem->{StandardSecond}\n";
+      print "Standard Year: $objItem->{StandardYear}\n";
+      print "\n";
+}

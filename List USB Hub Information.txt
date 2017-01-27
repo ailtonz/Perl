@@ -1,0 +1,52 @@
+###
+###
+###
+### Category1 : Storage
+### Category2 : Disk Drives and Volumes
+### Category3 : Controllers and Hubs
+### Description : Returns information about all the USB hubs found on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_USBHub","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Availability: $objItem->{Availability}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Class Code: $objItem->{ClassCode}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current Alternate Settings: " . join(",", (in $objItem->{CurrentAlternateSettings})) . "\n";
+      print "Current Config Value: $objItem->{CurrentConfigValue}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Gang Switched: $objItem->{GangSwitched}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Configs: $objItem->{NumberOfConfigs}\n";
+      print "Number Of Ports: $objItem->{NumberOfPorts}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Protocol Code: $objItem->{ProtocolCode}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "Subclass Code: $objItem->{SubclassCode}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "USB Version: $objItem->{USBVersion}\n";
+      print "\n";
+}

@@ -1,0 +1,34 @@
+###
+###
+###
+### Category1 : Scripting Techniques
+### Category2 : Dates and Times
+### Category3 : 
+### Description : Reports the Universal Time Coordinate (UTC) time on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_UTCTime","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Day: $objItem->{Day}\n";
+      print "Day Of Week: $objItem->{DayOfWeek}\n";
+      print "Hour: $objItem->{Hour}\n";
+      print "Milliseconds: $objItem->{Milliseconds}\n";
+      print "Minute: $objItem->{Minute}\n";
+      print "Month: $objItem->{Month}\n";
+      print "Quarter: $objItem->{Quarter}\n";
+      print "Second: $objItem->{Second}\n";
+      print "Week In Month: $objItem->{WeekInMonth}\n";
+      print "Year: $objItem->{Year}\n";
+      print "\n";
+}

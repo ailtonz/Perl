@@ -1,0 +1,83 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Video and Display
+### Category3 : 
+### Description : Retrieves information about the video controller installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_VideoController","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Accelerator Capabilities: " . join(",", (in $objItem->{AcceleratorCapabilities})) . "\n";
+      print "Adapter Compatibility: $objItem->{AdapterCompatibility}\n";
+      print "Adapter DAC Type: $objItem->{AdapterDACType}\n";
+      print "Adapter RAM: $objItem->{AdapterRAM}\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Capability Descriptions: " . join(",", (in $objItem->{CapabilityDescriptions})) . "\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Color Table Entries: $objItem->{ColorTableEntries}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current Bits Per Pixel: $objItem->{CurrentBitsPerPixel}\n";
+      print "Current Horizontal Resolution: $objItem->{CurrentHorizontalResolution}\n";
+      print "Current Number Of Colors: $objItem->{CurrentNumberOfColors}\n";
+      print "Current Number Of Columns: $objItem->{CurrentNumberOfColumns}\n";
+      print "Current Number OfR ows: $objItem->{CurrentNumberOfRows}\n";
+      print "Current Refresh Rate: $objItem->{CurrentRefreshRate}\n";
+      print "Current Scan Mode: $objItem->{CurrentScanMode}\n";
+      print "Current Vertical Resolution: $objItem->{CurrentVerticalResolution}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Device SpecificPens: $objItem->{DeviceSpecificPens}\n";
+      print "Dither Type: $objItem->{DitherType}\n";
+      print "Driver Date: $objItem->{DriverDate}\n";
+      print "Driver Version: $objItem->{DriverVersion}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "ICM Intent: $objItem->{ICMIntent}\n";
+      print "ICM Method: $objItem->{ICMMethod}\n";
+      print "Inf Filename: $objItem->{InfFilename}\n";
+      print "Inf Section: $objItem->{InfSection}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Installed Display Drivers: $objItem->{InstalledDisplayDrivers}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Max Memory Supported: $objItem->{MaxMemorySupported}\n";
+      print "Max Number Controlled: $objItem->{MaxNumberControlled}\n";
+      print "Max Refresh Rate: $objItem->{MaxRefreshRate}\n";
+      print "Min Refresh Rate: $objItem->{MinRefreshRate}\n";
+      print "Monochrome: $objItem->{Monochrome}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Color Planes: $objItem->{NumberOfColorPlanes}\n";
+      print "Number Of Video Pages: $objItem->{NumberOfVideoPages}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Protocol Supported: $objItem->{ProtocolSupported}\n";
+      print "Reserved System Palette Entries: $objItem->{ReservedSystemPaletteEntries}\n";
+      print "Specification Version: $objItem->{SpecificationVersion}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "SystemN ame: $objItem->{SystemName}\n";
+      print "System Palette Entries: $objItem->{SystemPaletteEntries}\n";
+      print "Time Of Last Reset: $objItem->{TimeOfLastReset}\n";
+      print "Video Architecture: $objItem->{VideoArchitecture}\n";
+      print "Video Memory Type: $objItem->{VideoMemoryType}\n";
+      print "Video Mode: $objItem->{VideoMode}\n";
+      print "Video Mode Description: $objItem->{VideoModeDescription}\n";
+      print "Video Processor: $objItem->{VideoProcessor}\n";
+      print "\n";
+}

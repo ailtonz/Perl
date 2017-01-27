@@ -1,0 +1,47 @@
+###
+###
+###
+### Category1 : Networking
+### Category2 : Client-Side Management
+### Category3 : Retrieving Network Configuration Information
+### Description : Uses WMI to return information about all the network protocols installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_NetworkProtocol","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Connectionless Service: $objItem->{ConnectionlessService}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Guarantees Delivery: $objItem->{GuaranteesDelivery}\n";
+      print "Guarantees Sequencing: $objItem->{GuaranteesSequencing}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Maximum Address Size: $objItem->{MaximumAddressSize}\n";
+      print "Maximum Message Size: $objItem->{MaximumMessageSize}\n";
+      print "Message Oriented: $objItem->{MessageOriented}\n";
+      print "Minimum Address Size: $objItem->{MinimumAddressSize}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Pseudo-Stream Oriented: $objItem->{PseudoStreamOriented}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Supports Broadcasting: $objItem->{SupportsBroadcasting}\n";
+      print "Supports Connect Data: $objItem->{SupportsConnectData}\n";
+      print "Supports Disconnect Data: $objItem->{SupportsDisconnectData}\n";
+      print "Supports Encryption: $objItem->{SupportsEncryption}\n";
+      print "Supports Expedited Data: $objItem->{SupportsExpeditedData}\n";
+      print "Supports Fragmentation: $objItem->{SupportsFragmentation}\n";
+      print "Supports Graceful Closing: $objItem->{SupportsGracefulClosing}\n";
+      print "Supports Guaranteed Bandwidth: $objItem->{SupportsGuaranteedBandwidth}\n";
+      print "Supports Multicasting: $objItem->{SupportsMulticasting}\n";
+      print "Supports Quality of Service: $objItem->{SupportsQualityofService}\n";
+      print "\n";
+}

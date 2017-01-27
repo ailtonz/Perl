@@ -1,0 +1,33 @@
+###
+###
+###
+### Category1 : Desktop Management
+### Category2 : Windows Activation
+### Category3 : 
+### Description : Returns product activation information for a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_WindowsProductActivation","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Activation Required: $objItem->{ActivationRequired}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Is Notification On: $objItem->{IsNotificationOn}\n";
+      print "Product ID: $objItem->{ProductID}\n";
+      print "Remaining Evaluation Period: $objItem->{RemainingEvaluationPeriod}\n";
+      print "Remaining Grace Period: $objItem->{RemainingGracePeriod}\n";
+      print "Server Name: $objItem->{ServerName}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "\n";
+}

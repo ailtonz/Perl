@@ -1,0 +1,67 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Batteries and Power Supplies
+### Category3 : 
+### Description : Lists information about the uninterruptible power sources attached to a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_UninterruptiblePowerSupply","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Active Input Voltage: $objItem->{ActiveInputVoltage}\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Battery Installed: $objItem->{BatteryInstalled}\n";
+      print "Can Turn Off Remotely: $objItem->{CanTurnOffRemotely}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Command File: $objItem->{CommandFile}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Estimated Charge Remaining: $objItem->{EstimatedChargeRemaining}\n";
+      print "Estimated Run Time: $objItem->{EstimatedRunTime}\n";
+      print "First Message Delay: $objItem->{FirstMessageDelay}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Is Switching Supply: $objItem->{IsSwitchingSupply}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Low Battery Signal: $objItem->{LowBatterySignal}\n";
+      print "Message Interval: $objItem->{MessageInterval}\n";
+      print "Name: $objItem->{Name}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Fail Signal: $objItem->{PowerFailSignal}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Range 1 Input Frequency High: $objItem->{Range1InputFrequencyHigh}\n";
+      print "Range 1 Input Frequency Low: $objItem->{Range1InputFrequencyLow}\n";
+      print "Range 1 Input Voltage High: $objItem->{Range1InputVoltageHigh}\n";
+      print "Range 1 Input Voltage Low: $objItem->{Range1InputVoltageLow}\n";
+      print "Range 2 Input Frequency High: $objItem->{Range2InputFrequencyHigh}\n";
+      print "Range 2 Input Frequenc yLow: $objItem->{Range2InputFrequencyLow}\n";
+      print "Range 2 Input Voltage High: $objItem->{Range2InputVoltageHigh}\n";
+      print "Range 2 Input Voltage Low: $objItem->{Range2InputVoltageLow}\n";
+      print "Remaining Capacity Status: $objItem->{RemainingCapacityStatus}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "Time On Backup: $objItem->{TimeOnBackup}\n";
+      print "Total Output Power: $objItem->{TotalOutputPower}\n";
+      print "Type Of Range Switching: $objItem->{TypeOfRangeSwitching}\n";
+      print "UPS Port: $objItem->{UPSPort}\n";
+      print "\n";
+}
