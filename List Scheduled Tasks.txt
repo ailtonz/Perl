@@ -1,0 +1,43 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : Task Scheduling
+### Category3 : 
+### Description : Enumerates all the scheduled tasks on a computer. Note: WMI can only enumerate scheduled tasks created using the Win32_ScheduledJob class or the At.exe utility. It cannot enumerate tasks created using the Task Scheduler.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_ScheduledJob","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Command: $objItem->{Command}\n";
+      print "Days Of Month: $objItem->{DaysOfMonth}\n";
+      print "Days Of Week: $objItem->{DaysOfWeek}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Elapsed Time: $objItem->{ElapsedTime}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Interact With Desktop: $objItem->{InteractWithDesktop}\n";
+      print "Job Id: $objItem->{JobId}\n";
+      print "Job Status: $objItem->{JobStatus}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Notify: $objItem->{Notify}\n";
+      print "Owner: $objItem->{Owner}\n";
+      print "Priority: $objItem->{Priority}\n";
+      print "Run Repeatedly: $objItem->{RunRepeatedly}\n";
+      print "Start Time: $objItem->{StartTime}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Time Submitted: $objItem->{TimeSubmitted}\n";
+      print "Until Time: $objItem->{UntilTime}\n";
+      print "\n";
+}

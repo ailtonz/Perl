@@ -1,0 +1,40 @@
+###
+###
+###
+### Category1 : Logs
+### Category2 : Event Logs
+### Category3 : 
+### Description : Retrieves events from the Application and System event logs.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_NTLogEvent","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Category: $objItem->{Category}\n";
+      print "Category String: $objItem->{CategoryString}\n";
+      print "Computer Name: $objItem->{ComputerName}\n";
+      print "Data: " . join(",", (in $objItem->{Data})) . "\n";
+      print "Event Code: $objItem->{EventCode}\n";
+      print "Event Identifier: $objItem->{EventIdentifier}\n";
+      print "Event Type: $objItem->{EventType}\n";
+      print "Insertion Strings: " . join(",", (in $objItem->{InsertionStrings})) . "\n";
+      print "Logfile: $objItem->{Logfile}\n";
+      print "Message: $objItem->{Message}\n";
+      print "Record Number: $objItem->{RecordNumber}\n";
+      print "Source Name: $objItem->{SourceName}\n";
+      print "Time Generated: $objItem->{TimeGenerated}\n";
+      print "Time Written: $objItem->{TimeWritten}\n";
+      print "Type: $objItem->{Type}\n";
+      print "User: $objItem->{User}\n";
+      print "\n";
+}

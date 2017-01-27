@@ -1,0 +1,51 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Basic Hardware and Firmware
+### Category3 : 
+### Description : Retrieves BIOS information for a computer, including BIOS version number and release date.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_BIOS","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Bios Characteristics: " . join(",", (in $objItem->{BiosCharacteristics})) . "\n";
+      print "BIOS Version: " . join(",", (in $objItem->{BIOSVersion})) . "\n";
+      print "Build Number: $objItem->{BuildNumber}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Code Set: $objItem->{CodeSet}\n";
+      print "Current Language: $objItem->{CurrentLanguage}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Identification Code: $objItem->{IdentificationCode}\n";
+      print "Installable Languages: $objItem->{InstallableLanguages}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Language Edition: $objItem->{LanguageEdition}\n";
+      print "List Of Languages: " . join(",", (in $objItem->{ListOfLanguages})) . "\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Other Target OS: $objItem->{OtherTargetOS}\n";
+      print "Primary BIOS: $objItem->{PrimaryBIOS}\n";
+      print "Release Date: $objItem->{ReleaseDate}\n";
+      print "Serial Number: $objItem->{SerialNumber}\n";
+      print "SMBIOS BIOS Version: $objItem->{SMBIOSBIOSVersion}\n";
+      print "SMBIOS Major Version: $objItem->{SMBIOSMajorVersion}\n";
+      print "SMBIOS Minor Version: $objItem->{SMBIOSMinorVersion}\n";
+      print "SMBIOS Present: $objItem->{SMBIOSPresent}\n";
+      print "Software Element ID: $objItem->{SoftwareElementID}\n";
+      print "Software Element State: $objItem->{SoftwareElementState}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Target Operating System: $objItem->{TargetOperatingSystem}\n";
+      print "Version: $objItem->{Version}\n";
+      print "\n";
+}

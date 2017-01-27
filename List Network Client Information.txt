@@ -1,0 +1,30 @@
+###
+###
+###
+### Category1 : Networking
+### Category2 : Client-Side Management
+### Category3 : Retrieving Network Configuration Information
+### Description : Returns information about all the network clients installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_NetworkClient","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Status: $objItem->{Status}\n";
+      print "\n";
+}

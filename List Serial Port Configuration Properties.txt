@@ -1,0 +1,53 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Ports and Slots
+### Category3 : 
+### Description : Enumerates configuration values for all the serial ports installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_SerialPortConfiguration","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Abort Read Write On Error: $objItem->{AbortReadWriteOnError}\n";
+      print "Baud Rate: $objItem->{BaudRate}\n";
+      print "Binary Mode Enabled: $objItem->{BinaryModeEnabled}\n";
+      print "Bits Per Byte: $objItem->{BitsPerByte}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Continue XMitOn XOff: $objItem->{ContinueXMitOnXOff}\n";
+      print "CTS Outflow Control: $objItem->{CTSOutflowControl}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Discard NULL Bytes: $objItem->{DiscardNULLBytes}\n";
+      print "DSR Outflow Control: $objItem->{DSROutflowControl}\n";
+      print "DSR Sensitivity: $objItem->{DSRSensitivity}\n";
+      print "DTR Flow Control Type: $objItem->{DTRFlowControlType}\n";
+      print "EOF Character: $objItem->{EOFCharacter}\n";
+      print "Error Replace Character: $objItem->{ErrorReplaceCharacter}\n";
+      print "Error Replacement Enabled: $objItem->{ErrorReplacementEnabled}\n";
+      print "Event Character: $objItem->{EventCharacter}\n";
+      print "Is Busy: $objItem->{IsBusy}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Parity: $objItem->{Parity}\n";
+      print "Parity Check Enabled: $objItem->{ParityCheckEnabled}\n";
+      print "RTS Flow Control Type: $objItem->{RTSFlowControlType}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Stop Bits: $objItem->{StopBits}\n";
+      print "XOff Character: $objItem->{XOffCharacter}\n";
+      print "XOff XMit Threshold: $objItem->{XOffXMitThreshold}\n";
+      print "XOn Character: $objItem->{XOnCharacter}\n";
+      print "XOn XMit Threshold: $objItem->{XOnXMitThreshold}\n";
+      print "XOn XOff InFlow Control: $objItem->{XOnXOffInFlowControl}\n";
+      print "XOn XOff OutFlow Control: $objItem->{XOnXOffOutFlowControl}\n";
+      print "\n";
+}

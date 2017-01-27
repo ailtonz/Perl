@@ -1,0 +1,34 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Video and Display
+### Category3 : 
+### Description : Returns a list of all the possible video display resolutions that can be configured on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM CIM_VideoControllerResolution","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Horizontal Resolution: $objItem->{HorizontalResolution}\n";
+      print "Max Refresh Rate: $objItem->{MaxRefreshRate}\n";
+      print "Min Refresh Rate: $objItem->{MinRefreshRate}\n";
+      print "Number Of Colors: $objItem->{NumberOfColors}\n";
+      print "Refresh Rate: $objItem->{RefreshRate}\n";
+      print "Scan Mode: $objItem->{ScanMode}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Vertical Resolution: $objItem->{VerticalResolution}\n";
+      print "\n";
+}

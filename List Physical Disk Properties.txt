@@ -1,0 +1,73 @@
+###
+###
+###
+### Category1 : Storage
+### Category2 : Disk Drives and Volumes
+### Category3 : Physical and Logical Disks
+### Description : Retrieves the properties for all the physical disk drives installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_DiskDrive","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Availability: $objItem->{Availability}\n";
+      print "Bytes Per Sector: $objItem->{BytesPerSector}\n";
+      print "Capabilities: " . join(",", (in $objItem->{Capabilities})) . "\n";
+      print "Capability Descriptions: " . join(",", (in $objItem->{CapabilityDescriptions})) . "\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Compression Method: $objItem->{CompressionMethod}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Default Block Size: $objItem->{DefaultBlockSize}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Error Methodology: $objItem->{ErrorMethodology}\n";
+      print "Index: $objItem->{Index}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Interface Type: $objItem->{InterfaceType}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Max Block Size: $objItem->{MaxBlockSize}\n";
+      print "Max Media Size: $objItem->{MaxMediaSize}\n";
+      print "Media Loaded: $objItem->{MediaLoaded}\n";
+      print "Media Type: $objItem->{MediaType}\n";
+      print "Min Block Size: $objItem->{MinBlockSize}\n";
+      print "Model: $objItem->{Model}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Needs Cleaning: $objItem->{NeedsCleaning}\n";
+      print "Number Of Media Supported: $objItem->{NumberOfMediaSupported}\n";
+      print "Partitions: $objItem->{Partitions}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "SCSI Bus: $objItem->{SCSIBus}\n";
+      print "SCSI Logical Unit: $objItem->{SCSILogicalUnit}\n";
+      print "SCSI Port: $objItem->{SCSIPort}\n";
+      print "SCSI Target Id: $objItem->{SCSITargetId}\n";
+      print "Sectors Per Track: $objItem->{SectorsPerTrack}\n";
+      print "Signature: $objItem->{Signature}\n";
+      print "Size: $objItem->{Size}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "Total Cylinders: $objItem->{TotalCylinders}\n";
+      print "Total Heads: $objItem->{TotalHeads}\n";
+      print "Total Sectors: $objItem->{TotalSectors}\n";
+      print "Total Tracks: $objItem->{TotalTracks}\n";
+      print "Tracks Per Cylinder: $objItem->{TracksPerCylinder}\n";
+      print "\n";
+}

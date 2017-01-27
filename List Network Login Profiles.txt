@@ -1,0 +1,56 @@
+###
+###
+###
+### Category1 : Networking
+### Category2 : Client-Side Management
+### Category3 : Retrieving Network Configuration Information
+### Description : Returns network login information for all the users of a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_NetworkLoginProfile","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Account Expires: $objItem->{AccountExpires}\n";
+      print "Authorization Flags: $objItem->{AuthorizationFlags}\n";
+      print "Bad Password Count: $objItem->{BadPasswordCount}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Code Page: $objItem->{CodePage}\n";
+      print "Comment: $objItem->{Comment}\n";
+      print "Country Code: $objItem->{CountryCode}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Flags: $objItem->{Flags}\n";
+      print "Full Name: $objItem->{FullName}\n";
+      print "Home Directory: $objItem->{HomeDirectory}\n";
+      print "Home DirectoryDrive: $objItem->{HomeDirectoryDrive}\n";
+      print "Last Logoff: $objItem->{LastLogoff}\n";
+      print "Last Logon: $objItem->{LastLogon}\n";
+      print "Logon Hours: $objItem->{LogonHours}\n";
+      print "Logon Server: $objItem->{LogonServer}\n";
+      print "Maximum Storage: $objItem->{MaximumStorage}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Logons: $objItem->{NumberOfLogons}\n";
+      print "Parameters: $objItem->{Parameters}\n";
+      print "Password Age: $objItem->{PasswordAge}\n";
+      print "Password Expires: $objItem->{PasswordExpires}\n";
+      print "Primary Group Id: $objItem->{PrimaryGroupId}\n";
+      print "Privileges: $objItem->{Privileges}\n";
+      print "Profile: $objItem->{Profile}\n";
+      print "Script Path: $objItem->{ScriptPath}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Units Per Week: $objItem->{UnitsPerWeek}\n";
+      print "User Comment: $objItem->{UserComment}\n";
+      print "User Id: $objItem->{UserId}\n";
+      print "User Type: $objItem->{UserType}\n";
+      print "Workstations: $objItem->{Workstations}\n";
+      print "\n";
+}

@@ -1,0 +1,77 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Memory
+### Category3 : 
+### Description : Returns information about both the internal and external cache memory on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_CacheMemory","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Access: $objItem->{Access}\n";
+      print "Additional Error Data: " . join(",", (in $objItem->{AdditionalErrorData})) . "\n";
+      print "Associativity: $objItem->{Associativity}\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Block Size: $objItem->{BlockSize}\n";
+      print "Cache Speed: $objItem->{CacheSpeed}\n";
+      print "Cache Type: $objItem->{CacheType}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Correctable Error: $objItem->{CorrectableError}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current SRAM: " . join(",", (in $objItem->{CurrentSRAM})) . "\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Ending Address: $objItem->{EndingAddress}\n";
+      print "Error Access: $objItem->{ErrorAccess}\n";
+      print "Error Address: $objItem->{ErrorAddress}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Correct Type: $objItem->{ErrorCorrectType}\n";
+      print "Error Data: " . join(",", (in $objItem->{ErrorData})) . "\n";
+      print "Error Data Order: $objItem->{ErrorDataOrder}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Error Info: $objItem->{ErrorInfo}\n";
+      print "Error Methodology: $objItem->{ErrorMethodology}\n";
+      print "Error Resolution: $objItem->{ErrorResolution}\n";
+      print "Error Time: $objItem->{ErrorTime}\n";
+      print "Error Transfer Size: $objItem->{ErrorTransferSize}\n";
+      print "Flush Timer: $objItem->{FlushTimer}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Installed Size: $objItem->{InstalledSize}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Level: $objItem->{Level}\n";
+      print "Line Size: $objItem->{LineSize}\n";
+      print "Location: $objItem->{Location}\n";
+      print "Max Cache Size: $objItem->{MaxCacheSize}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Blocks: $objItem->{NumberOfBlocks}\n";
+      print "Other Error Description: $objItem->{OtherErrorDescription}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Purpose: $objItem->{Purpose}\n";
+      print "Read Policy: $objItem->{ReadPolicy}\n";
+      print "Replacement Policy: $objItem->{ReplacementPolicy}\n";
+      print "Starting Address: $objItem->{StartingAddress}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "Supported SRAM: " . join(",", (in $objItem->{SupportedSRAM})) . "\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Level Address: $objItem->{SystemLevelAddress}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "Write Policy: $objItem->{WritePolicy}\n";
+      print "\n";
+}

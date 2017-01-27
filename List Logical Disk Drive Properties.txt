@@ -1,0 +1,64 @@
+###
+###
+###
+### Category1 : Storage
+### Category2 : Disk Drives and Volumes
+### Category3 : Physical and Logical Disks
+### Description : Lists the properties for all the logical disk drives on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_LogicalDisk","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Access: $objItem->{Access}\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Block Size: $objItem->{BlockSize}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Compressed: $objItem->{Compressed}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Drive Type: $objItem->{DriveType}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Error Methodology: $objItem->{ErrorMethodology}\n";
+      print "File System: $objItem->{FileSystem}\n";
+      print "Free Space: $objItem->{FreeSpace}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Maximum Component Length: $objItem->{MaximumComponentLength}\n";
+      print "Media Type: $objItem->{MediaType}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Blocks: $objItem->{NumberOfBlocks}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Provider Name: $objItem->{ProviderName}\n";
+      print "Purpose: $objItem->{Purpose}\n";
+      print "Quotas Disabled: $objItem->{QuotasDisabled}\n";
+      print "Quotas Incomplete: $objItem->{QuotasIncomplete}\n";
+      print "Quotas Rebuilding: $objItem->{QuotasRebuilding}\n";
+      print "Size: $objItem->{Size}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "Supports Disk Quotas: $objItem->{SupportsDiskQuotas}\n";
+      print "Supports File-Based Compression: $objItem->{SupportsFileBasedCompression}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "Volume Dirty: $objItem->{VolumeDirty}\n";
+      print "Volume Name: $objItem->{VolumeName}\n";
+      print "Volume Serial Number: $objItem->{VolumeSerialNumber}\n";
+      print "\n";
+}

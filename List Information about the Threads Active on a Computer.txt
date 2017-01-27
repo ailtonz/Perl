@@ -1,0 +1,46 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : Processes
+### Category3 : Processes and Threads
+### Description : Returns a list of threads and thread states for each process running on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_Thread","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "CS Creation Class Name: $objItem->{CSCreationClassName}\n";
+      print "CS Name: $objItem->{CSName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Elapsed Time: $objItem->{ElapsedTime}\n";
+      print "Execution State: $objItem->{ExecutionState}\n";
+      print "Handle: $objItem->{Handle}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Kernel Mode Time: $objItem->{KernelModeTime}\n";
+      print "Name: $objItem->{Name}\n";
+      print "OS Creation Class Name: $objItem->{OSCreationClassName}\n";
+      print "OS Name: $objItem->{OSName}\n";
+      print "Priority: $objItem->{Priority}\n";
+      print "Priority Base: $objItem->{PriorityBase}\n";
+      print "Process Creation Class Name: $objItem->{ProcessCreationClassName}\n";
+      print "Process Handle: $objItem->{ProcessHandle}\n";
+      print "Start Address: $objItem->{StartAddress}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Thread State: $objItem->{ThreadState}\n";
+      print "Thread Wait Reason: $objItem->{ThreadWaitReason}\n";
+      print "User Mode Time: $objItem->{UserModeTime}\n";
+      print "\n";
+}

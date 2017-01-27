@@ -1,0 +1,81 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : Version Information
+### Category3 : 
+### Description : Retrieves information about the operating system installed on a computer, including language, encryption level, and build number.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_OperatingSystem","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Boot Device: $objItem->{BootDevice}\n";
+      print "Build Number: $objItem->{BuildNumber}\n";
+      print "Build Type: $objItem->{BuildType}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Code Set: $objItem->{CodeSet}\n";
+      print "Country Code: $objItem->{CountryCode}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "CS Creation Class Name: $objItem->{CSCreationClassName}\n";
+      print "CSD Version: $objItem->{CSDVersion}\n";
+      print "CS Name: $objItem->{CSName}\n";
+      print "Current Time Zone: $objItem->{CurrentTimeZone}\n";
+      print "Debug: $objItem->{Debug}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Distributed: $objItem->{Distributed}\n";
+      print "Encryption Level: $objItem->{EncryptionLevel}\n";
+      print "Foreground Application Boost: $objItem->{ForegroundApplicationBoost}\n";
+      print "Free Physical Memory: $objItem->{FreePhysicalMemory}\n";
+      print "Free Space In Paging Files: $objItem->{FreeSpaceInPagingFiles}\n";
+      print "Free Virtual Memory: $objItem->{FreeVirtualMemory}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Large System Cache: $objItem->{LargeSystemCache}\n";
+      print "Last BootUp Time: $objItem->{LastBootUpTime}\n";
+      print "Local Date Time: $objItem->{LocalDateTime}\n";
+      print "Locale: $objItem->{Locale}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Max Number Of Processes: $objItem->{MaxNumberOfProcesses}\n";
+      print "Max Process MemorySize: $objItem->{MaxProcessMemorySize}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Licensed Users: $objItem->{NumberOfLicensedUsers}\n";
+      print "Number Of Processes: $objItem->{NumberOfProcesses}\n";
+      print "Number Of Users: $objItem->{NumberOfUsers}\n";
+      print "Organization: $objItem->{Organization}\n";
+      print "OS Language: $objItem->{OSLanguage}\n";
+      print "OS Product Suite: $objItem->{OSProductSuite}\n";
+      print "OS Type: $objItem->{OSType}\n";
+      print "Other Type Description: $objItem->{OtherTypeDescription}\n";
+      print "Plus Product ID: $objItem->{PlusProductID}\n";
+      print "Plus Version Number: $objItem->{PlusVersionNumber}\n";
+      print "Primary: $objItem->{Primary}\n";
+      print "Product Type: $objItem->{ProductType}\n";
+      print "Quantum Length: $objItem->{QuantumLength}\n";
+      print "Quantum Type: $objItem->{QuantumType}\n";
+      print "Registered User: $objItem->{RegisteredUser}\n";
+      print "Serial Number: $objItem->{SerialNumber}\n";
+      print "Service Pack Major Version: $objItem->{ServicePackMajorVersion}\n";
+      print "Service Pack Minor Version: $objItem->{ServicePackMinorVersion}\n";
+      print "SizeS tored In Paging Files: $objItem->{SizeStoredInPagingFiles}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Suite Mask: $objItem->{SuiteMask}\n";
+      print "System Device: $objItem->{SystemDevice}\n";
+      print "System Directory: $objItem->{SystemDirectory}\n";
+      print "System Drive: $objItem->{SystemDrive}\n";
+      print "Total Swap Space Size: $objItem->{TotalSwapSpaceSize}\n";
+      print "Total Virtual Memory Size: $objItem->{TotalVirtualMemorySize}\n";
+      print "Total Visible Memory Size: $objItem->{TotalVisibleMemorySize}\n";
+      print "Version: $objItem->{Version}\n";
+      print "Windows Directory: $objItem->{WindowsDirectory}\n";
+      print "\n";
+}

@@ -1,0 +1,30 @@
+###
+###
+###
+### Category1 : Storage
+### Category2 : Disk Quotas
+### Category3 : 
+### Description : Enumerates disk quota information (including user name, warning and quota limits, and disk space used) for each disk quota entry on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_DiskQuota","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Disk Space Used: $objItem->{DiskSpaceUsed}\n";
+      print "Limit: $objItem->{Limit}\n";
+      print "Quota Volume: $objItem->{QuotaVolume}\n";
+      print "Status: $objItem->{Status}\n";
+      print "User: $objItem->{User}\n";
+      print "Warning Limit: $objItem->{WarningLimit}\n";
+      print "\n";
+}

@@ -1,0 +1,33 @@
+###
+###
+###
+### Category1 : Terminal Services
+### Category2 : Retrieving Terminal Service Properties
+### Category3 : 
+### Description : Returns general information about how Terminal Services has been configured on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_TSGeneralSetting","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Comment: $objItem->{Comment}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Min Encryption Level: $objItem->{MinEncryptionLevel}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Terminal Name: $objItem->{TerminalName}\n";
+      print "Terminal Protocol: $objItem->{TerminalProtocol}\n";
+      print "Transport: $objItem->{Transport}\n";
+      print "Windows Authentication: $objItem->{WindowsAuthentication}\n";
+      print "\n";
+}

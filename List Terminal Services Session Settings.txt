@@ -1,0 +1,35 @@
+###
+###
+###
+### Category1 : Terminal Services
+### Category2 : Retrieving Terminal Service Properties
+### Category3 : 
+### Description : Returns Terminal Service session configuration information.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_TSSessionSetting","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Active Session Limit: $objItem->{ActiveSessionLimit}\n";
+      print "Broken Connection Action: $objItem->{BrokenConnectionAction}\n";
+      print "Broken Connection Policy: $objItem->{BrokenConnectionPolicy}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Disconnected Session Limit: $objItem->{DisconnectedSessionLimit}\n";
+      print "Idle Session Limit: $objItem->{IdleSessionLimit}\n";
+      print "Reconnection Policy: $objItem->{ReconnectionPolicy}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Terminal Name: $objItem->{TerminalName}\n";
+      print "Time Limit Policy: $objItem->{TimeLimitPolicy}\n";
+      print "\n";
+}

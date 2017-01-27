@@ -1,0 +1,52 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Peripherals and Devices
+### Category3 : 
+### Description : Returns information about the signed plug and play drivers installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_PnPSignedDriver","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Class Guid: $objItem->{ClassGuid}\n";
+      print "CompatID: $objItem->{CompatID}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device Class: $objItem->{DeviceClass}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Device Name: $objItem->{DeviceName}\n";
+      print "Dev Loader: $objItem->{DevLoader}\n";
+      print "Driver Date: $objItem->{DriverDate}\n";
+      print "Driver Name: $objItem->{DriverName}\n";
+      print "Driver Provider Name: $objItem->{DriverProviderName}\n";
+      print "Driver Version: $objItem->{DriverVersion}\n";
+      print "Friendly Name: $objItem->{FriendlyName}\n";
+      print "HardWare ID: $objItem->{HardWareID}\n";
+      print "Inf Name: $objItem->{InfName}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Is Signed: $objItem->{IsSigned}\n";
+      print "Location: $objItem->{Location}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Name: $objItem->{Name}\n";
+      print "PDO: $objItem->{PDO}\n";
+      print "Signer: $objItem->{Signer}\n";
+      print "Started: $objItem->{Started}\n";
+      print "Start Mode: $objItem->{StartMode}\n";
+      print "Status: $objItem->{Status}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "\n";
+}

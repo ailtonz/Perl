@@ -1,0 +1,43 @@
+###
+###
+###
+### Category1 : Terminal Services
+### Category2 : Retrieving Terminal Service Properties
+### Category3 : 
+### Description : Lists the Terminal Service configuration settings on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_TerminalServiceSetting","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Active Desktop: $objItem->{ActiveDesktop}\n";
+      print "Allow TS Connections: $objItem->{AllowTSConnections}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Delete Temp Folders: $objItem->{DeleteTempFolders}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Direct Connect License Servers: $objItem->{DirectConnectLicenseServers}\n";
+      print "Help: $objItem->{Help}\n";
+      print "Home Directory: $objItem->{HomeDirectory}\n";
+      print "Licensing Description: $objItem->{LicensingDescription}\n";
+      print "Licensing Name: $objItem->{LicensingName}\n";
+      print "Licensing Type: $objItem->{LicensingType}\n";
+      print "Logons: $objItem->{Logons}\n";
+      print "Profile Path: $objItem->{ProfilePath}\n";
+      print "Server Name: $objItem->{ServerName}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Single Session: $objItem->{SingleSession}\n";
+      print "Terminal Server Mode: $objItem->{TerminalServerMode}\n";
+      print "User Permission: $objItem->{UserPermission}\n";
+      print "Use Temp Folders: $objItem->{UseTempFolders}\n";
+      print "\n";
+}

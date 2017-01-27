@@ -1,0 +1,103 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Peripherals and Devices
+### Category3 : 
+### Description : Retrieves information about all the modems installed in a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_POTSModem","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Answer Mode: $objItem->{AnswerMode}\n";
+      print "Attached To: $objItem->{AttachedTo}\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Blind Off: $objItem->{BlindOff}\n";
+      print "Blind On: $objItem->{BlindOn}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Compatibility Flags: $objItem->{CompatibilityFlags}\n";
+      print "Compression Info: $objItem->{CompressionInfo}\n";
+      print "Compression Off: $objItem->{CompressionOff}\n";
+      print "Compression On: $objItem->{CompressionOn}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Configuration Dialog: $objItem->{ConfigurationDialog}\n";
+      print "Countries Supported: " . join(",", (in $objItem->{CountriesSupported})) . "\n";
+      print "Country Selected: $objItem->{CountrySelected}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current Passwords: " . join(",", (in $objItem->{CurrentPasswords})) . "\n";
+      print "DCB: " . join(",", (in $objItem->{DCB})) . "\n";
+      print "Default: " . join(",", (in $objItem->{Default})) . "\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Device Loader: $objItem->{DeviceLoader}\n";
+      print "Device Type: $objItem->{DeviceType}\n";
+      print "Dial Type: $objItem->{DialType}\n";
+      print "Driver Date: $objItem->{DriverDate}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Control Forced: $objItem->{ErrorControlForced}\n";
+      print "Error Control Info: $objItem->{ErrorControlInfo}\n";
+      print "Error Control Off: $objItem->{ErrorControlOff}\n";
+      print "Error Control On: $objItem->{ErrorControlOn}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Flow Control Hard: $objItem->{FlowControlHard}\n";
+      print "Flow Control Off: $objItem->{FlowControlOff}\n";
+      print "Flow Control Soft: $objItem->{FlowControlSoft}\n";
+      print "Inactivity Scale: $objItem->{InactivityScale}\n";
+      print "Inactivity Timeout: $objItem->{InactivityTimeout}\n";
+      print "Index: $objItem->{Index}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Max Baud Rate To Phone: $objItem->{MaxBaudRateToPhone}\n";
+      print "Max Baud Rate To Serial Port: $objItem->{MaxBaudRateToSerialPort}\n";
+      print "Max Number Of Passwords: $objItem->{MaxNumberOfPasswords}\n";
+      print "Model: $objItem->{Model}\n";
+      print "Modem Inf Path: $objItem->{ModemInfPath}\n";
+      print "Modem Inf Section: $objItem->{ModemInfSection}\n";
+      print "Modulation Bell: $objItem->{ModulationBell}\n";
+      print "Modulation CCITT: $objItem->{ModulationCCITT}\n";
+      print "Modulation Scheme: $objItem->{ModulationScheme}\n";
+      print "Name: $objItem->{Name}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Port Sub Class: $objItem->{PortSubClass}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Prefix: $objItem->{Prefix}\n";
+      print "Properties: " . join(",", (in $objItem->{Properties})) . "\n";
+      print "Provider Name: $objItem->{ProviderName}\n";
+      print "Pulse: $objItem->{Pulse}\n";
+      print "Reset: $objItem->{Reset}\n";
+      print "Responses Key Name: $objItem->{ResponsesKeyName}\n";
+      print "Rings Before Answer: $objItem->{RingsBeforeAnswer}\n";
+      print "Speaker Mode Dial: $objItem->{SpeakerModeDial}\n";
+      print "Speaker Mode Off: $objItem->{SpeakerModeOff}\n";
+      print "Speaker Mode On: $objItem->{SpeakerModeOn}\n";
+      print "Speaker Mode Setup: $objItem->{SpeakerModeSetup}\n";
+      print "Speaker Volume High: $objItem->{SpeakerVolumeHigh}\n";
+      print "Speaker Volume Info: $objItem->{SpeakerVolumeInfo}\n";
+      print "Speaker Volume Low: $objItem->{SpeakerVolumeLow}\n";
+      print "Speaker Volume Med: $objItem->{SpeakerVolumeMed}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "String Format: $objItem->{StringFormat}\n";
+      print "Supports Callback: $objItem->{SupportsCallback}\n";
+      print "Supports Synchronous Connect: $objItem->{SupportsSynchronousConnect}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "Terminator: $objItem->{Terminator}\n";
+      print "Time Of Last Reset: $objItem->{TimeOfLastReset}\n";
+      print "Tone: $objItem->{Tone}\n";
+      print "Voice Switch Feature: $objItem->{VoiceSwitchFeature}\n";
+      print "\n";
+}

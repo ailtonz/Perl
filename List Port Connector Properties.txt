@@ -1,0 +1,44 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Ports and Slots
+### Category3 : 
+### Description : Returns information about port connectors installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_PortConnector","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Connector Pinout: $objItem->{ConnectorPinout}\n";
+      print "Connector Type: " . join(",", (in $objItem->{ConnectorType})) . "\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "External Reference Designator: $objItem->{ExternalReferenceDesignator}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Internal Reference Designator: $objItem->{InternalReferenceDesignator}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Model: $objItem->{Model}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Other Identifying Info: $objItem->{OtherIdentifyingInfo}\n";
+      print "Part Number: $objItem->{PartNumber}\n";
+      print "Port Type: $objItem->{PortType}\n";
+      print "Powered On: $objItem->{PoweredOn}\n";
+      print "Serial Number: $objItem->{SerialNumber}\n";
+      print "SKU: $objItem->{SKU}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Tag: $objItem->{Tag}\n";
+      print "Version: $objItem->{Version}\n";
+      print "\n";
+}

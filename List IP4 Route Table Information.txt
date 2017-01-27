@@ -1,0 +1,42 @@
+###
+###
+###
+### Category1 : Networking
+### Category2 : Client-Side Management
+### Category3 : Retrieving Network Configuration Information
+### Description : Returns information about the IP route tables configured on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_IP4RouteTable","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Age: $objItem->{Age}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Destination: $objItem->{Destination}\n";
+      print "Information: $objItem->{Information}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Interface Index: $objItem->{InterfaceIndex}\n";
+      print "Mask: $objItem->{Mask}\n";
+      print "Metric 1: $objItem->{Metric1}\n";
+      print "Metric 2: $objItem->{Metric2}\n";
+      print "Metric 3: $objItem->{Metric3}\n";
+      print "Metric 4: $objItem->{Metric4}\n";
+      print "Metric 5: $objItem->{Metric5}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Next Hop: $objItem->{NextHop}\n";
+      print "Protocol: $objItem->{Protocol}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Type: $objItem->{Type}\n";
+      print "\n";
+}

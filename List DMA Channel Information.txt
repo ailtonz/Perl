@@ -1,0 +1,43 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Memory
+### Category3 : 
+### Description : Returns information about the configuration of DMA channels on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_DMAChannel","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Address Size: $objItem->{AddressSize}\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Burst Mode: $objItem->{BurstMode}\n";
+      print "Byte Mode: $objItem->{ByteMode}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Channel Timing: $objItem->{ChannelTiming}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "CS Creation Class Name: $objItem->{CSCreationClassName}\n";
+      print "CS Name: $objItem->{CSName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "DMA Channel: $objItem->{DMAChannel}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Max Transfer Size: $objItem->{MaxTransferSize}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Port: $objItem->{Port}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Transfer Widths: " . join(",", (in $objItem->{TransferWidths})) . "\n";
+      print "Type C Timing: $objItem->{TypeCTiming}\n";
+      print "Word Mode: $objItem->{WordMode}\n";
+      print "\n";
+}

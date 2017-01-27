@@ -1,0 +1,36 @@
+###
+###
+###
+### Category1 : Applications
+### Category2 : User
+### Category3 : 
+### Description : Returns a list of software that was installed on a computer using Windows Installer. This information is then written to a text file.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_Product","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Identifying Number: $objItem->{IdentifyingNumber}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Install Date 2: $objItem->{InstallDate2}\n";
+      print "Install Location: $objItem->{InstallLocation}\n";
+      print "Install State: $objItem->{InstallState}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Package Cache: $objItem->{PackageCache}\n";
+      print "SKU Number: $objItem->{SKUNumber}\n";
+      print "Vendor: $objItem->{Vendor}\n";
+      print "Version: $objItem->{Version}\n";
+      print "\n";
+}

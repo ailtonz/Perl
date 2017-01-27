@@ -1,0 +1,33 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : Page Files
+### Category3 : 
+### Description : Retrieves page file usage statistics.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_PageFileUsage","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Allocated Base Size: $objItem->{AllocatedBaseSize}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Current Usage: $objItem->{CurrentUsage}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Peak Usage: $objItem->{PeakUsage}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Temp PageFile: $objItem->{TempPageFile}\n";
+      print "\n";
+}

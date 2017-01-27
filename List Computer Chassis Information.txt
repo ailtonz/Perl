@@ -1,0 +1,61 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Basic Hardware and Firmware
+### Category3 : 
+### Description : Retrieves an integer value indicating the chassis type for a computer (mini-tower, laptop, etc.). The script does not include a description of each value that can be returned.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_SystemEnclosure","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Audible Alarm: $objItem->{AudibleAlarm}\n";
+      print "Breach Description: $objItem->{BreachDescription}\n";
+      print "Cable Management Strategy: $objItem->{CableManagementStrategy}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Chassis Types: " . join(",", (in $objItem->{ChassisTypes})) . "\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current Required Or Produced: $objItem->{CurrentRequiredOrProduced}\n";
+      print "Depth: $objItem->{Depth}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Heat Generation: $objItem->{HeatGeneration}\n";
+      print "Height: $objItem->{Height}\n";
+      print "Hot Swappable: $objItem->{HotSwappable}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Lock Present: $objItem->{LockPresent}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Model: $objItem->{Model}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Power Cords: $objItem->{NumberOfPowerCords}\n";
+      print "Other Identifying Info: $objItem->{OtherIdentifyingInfo}\n";
+      print "Part Number: $objItem->{PartNumber}\n";
+      print "Powered On: $objItem->{PoweredOn}\n";
+      print "Removable: $objItem->{Removable}\n";
+      print "Replaceable: $objItem->{Replaceable}\n";
+      print "Security Breach: $objItem->{SecurityBreach}\n";
+      print "Security Status: $objItem->{SecurityStatus}\n";
+      print "Serial Number: $objItem->{SerialNumber}\n";
+      print "Service Descriptions: " . join(",", (in $objItem->{ServiceDescriptions})) . "\n";
+      print "Service Philosophy: " . join(",", (in $objItem->{ServicePhilosophy})) . "\n";
+      print "SKU: $objItem->{SKU}\n";
+      print "SMBIOS Asset Tag: $objItem->{SMBIOSAssetTag}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Tag: $objItem->{Tag}\n";
+      print "Type Descriptions: " . join(",", (in $objItem->{TypeDescriptions})) . "\n";
+      print "Version: $objItem->{Version}\n";
+      print "Visible Alarm: $objItem->{VisibleAlarm}\n";
+      print "Weight: $objItem->{Weight}\n";
+      print "Width: $objItem->{Width}\n";
+      print "\n";
+}

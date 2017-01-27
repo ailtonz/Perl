@@ -1,0 +1,49 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : Services
+### Category3 : 
+### Description : Retrieves a complete list of services and their associated properties. Information is saved to a text file: C:\Scripts\Service_List.cs.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_Service","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Accept Pause: $objItem->{AcceptPause}\n";
+      print "Accept Stop: $objItem->{AcceptStop}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Check Point: $objItem->{CheckPoint}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Desktop Interact: $objItem->{DesktopInteract}\n";
+      print "Display Name: $objItem->{DisplayName}\n";
+      print "Error Control: $objItem->{ErrorControl}\n";
+      print "Exit Code: $objItem->{ExitCode}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Path Name: $objItem->{PathName}\n";
+      print "Process Id: $objItem->{ProcessId}\n";
+      print "Service Specific Exit Code: $objItem->{ServiceSpecificExitCode}\n";
+      print "Service Type: $objItem->{ServiceType}\n";
+      print "Started: $objItem->{Started}\n";
+      print "Start Mode: $objItem->{StartMode}\n";
+      print "Start Name: $objItem->{StartName}\n";
+      print "State: $objItem->{State}\n";
+      print "Status: $objItem->{Status}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "Tag Id: $objItem->{TagId}\n";
+      print "Wait Hint: $objItem->{WaitHint}\n";
+      print "\n";
+}

@@ -1,0 +1,25 @@
+###
+###
+###
+### Category1 : 
+### Category2 : 
+### Category3 : 
+### Description : 
+###
+###
+###
+use DBI;
+my $dbs = "dbi:ODBC:DRIVER={SQL Server};SERVER={ServerName}";
+my ($username, $password) = ('username', 'password');
+
+my $dbh = DBI->connect($dbs, $username, $password);
+
+if (defined($dbh))
+{
+    #write code here
+    $dbh->disconnect;
+}
+else
+{
+    print "Error connecting to database: Error $DBI::err - $DBI::errstr\n";
+}

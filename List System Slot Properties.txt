@@ -1,0 +1,55 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Ports and Slots
+### Category3 : 
+### Description : Returns information about the system slots installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_SystemSlot","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Connector Pinout: $objItem->{ConnectorPinout}\n";
+      print "Connector Type: " . join(",", (in $objItem->{ConnectorType})) . "\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current Usage: $objItem->{CurrentUsage}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Height Allowed: $objItem->{HeightAllowed}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Length Allowed: $objItem->{LengthAllowed}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Max Data Width: $objItem->{MaxDataWidth}\n";
+      print "Model: $objItem->{Model}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number: $objItem->{Number}\n";
+      print "Other Identifying Info: $objItem->{OtherIdentifyingInfo}\n";
+      print "Part Number: $objItem->{PartNumber}\n";
+      print "PME Signal: $objItem->{PMESignal}\n";
+      print "Powered On: $objItem->{PoweredOn}\n";
+      print "Purpose Description: $objItem->{PurposeDescription}\n";
+      print "Serial Number: $objItem->{SerialNumber}\n";
+      print "Shared: $objItem->{Shared}\n";
+      print "SKU: $objItem->{SKU}\n";
+      print "Slot Designation: $objItem->{SlotDesignation}\n";
+      print "Special Purpose: $objItem->{SpecialPurpose}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Supports Hot Plug: $objItem->{SupportsHotPlug}\n";
+      print "Tag: $objItem->{Tag}\n";
+      print "Thermal Rating: $objItem->{ThermalRating}\n";
+      print "Vcc Mixed Voltage Support: " . join(",", (in $objItem->{VccMixedVoltageSupport})) . "\n";
+      print "Version: $objItem->{Version}\n";
+      print "Vpp Mixed Voltage Support: " . join(",", (in $objItem->{VppMixedVoltageSupport})) . "\n";
+      print "\n";
+}

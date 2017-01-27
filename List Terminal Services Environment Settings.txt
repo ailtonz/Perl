@@ -1,0 +1,32 @@
+###
+###
+###
+### Category1 : Terminal Services
+### Category2 : Retrieving Terminal Service Properties
+### Category3 : 
+### Description : Returns information about the Terminal Service client environment settings configured on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_TSEnvironmentSetting","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Client WallPaper: $objItem->{ClientWallPaper}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Initial Program Path: $objItem->{InitialProgramPath}\n";
+      print "Initial Program Policy: $objItem->{InitialProgramPolicy}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Start in: $objItem->{Startin}\n";
+      print "Terminal Name: $objItem->{TerminalName}\n";
+      print "\n";
+}

@@ -1,0 +1,30 @@
+###
+###
+###
+### Category1 : Operating System
+### Category2 : COM and DCOM
+### Category3 : 
+### Description : Retrieves information about all the “classic” COM classes installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_ClassicCOMClass","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Component Id: $objItem->{ComponentId}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Status: $objItem->{Status}\n";
+      print "\n";
+}

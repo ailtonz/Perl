@@ -1,0 +1,30 @@
+###
+###
+###
+### Category1 : Networking
+### Category2 : Monitoring
+### Category3 : 
+### Description : Returns proxy and NNTP information for a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM NetDiagnostics","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "bIE Proxy: $objItem->{bIEProxy}\n";
+      print "id: $objItem->{id}\n";
+      print "IE Proxy: $objItem->{IEProxy}\n";
+      print "IE Proxy Port: $objItem->{IEProxyPort}\n";
+      print "News NNTP Port: $objItem->{NewsNNTPPort}\n";
+      print "News Server: $objItem->{NewsServer}\n";
+      print "\n";
+}

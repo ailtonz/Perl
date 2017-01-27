@@ -1,0 +1,35 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Memory
+### Category3 : 
+### Description : Returns starting and ending memory addresses for all devices installed in a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_DeviceMemoryAddress","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "CS Creation Class Name: $objItem->{CSCreationClassName}\n";
+      print "CS Name: $objItem->{CSName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Ending Address: $objItem->{EndingAddress}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Memory Type: $objItem->{MemoryType}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Starting Address: $objItem->{StartingAddress}\n";
+      print "Status: $objItem->{Status}\n";
+      print "\n";
+}

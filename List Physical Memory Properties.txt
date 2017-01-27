@@ -1,0 +1,54 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Memory
+### Category3 : 
+### Description : Returns information about the physical memory installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_PhysicalMemory","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Bank Label: $objItem->{BankLabel}\n";
+      print "Capacity: $objItem->{Capacity}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Data Width: $objItem->{DataWidth}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device Locator: $objItem->{DeviceLocator}\n";
+      print "Form Factor: $objItem->{FormFactor}\n";
+      print "Hot Swappable: $objItem->{HotSwappable}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Interleave Data Depth: $objItem->{InterleaveDataDepth}\n";
+      print "Interleave Position: $objItem->{InterleavePosition}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Memory Type: $objItem->{MemoryType}\n";
+      print "Model: $objItem->{Model}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Other Identifying Info: $objItem->{OtherIdentifyingInfo}\n";
+      print "Part Number: $objItem->{PartNumber}\n";
+      print "Position In Row: $objItem->{PositionInRow}\n";
+      print "Powered On: $objItem->{PoweredOn}\n";
+      print "Removable: $objItem->{Removable}\n";
+      print "Replaceable: $objItem->{Replaceable}\n";
+      print "Serial Number: $objItem->{SerialNumber}\n";
+      print "SKU: $objItem->{SKU}\n";
+      print "Speed: $objItem->{Speed}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Tag: $objItem->{Tag}\n";
+      print "Total Width: $objItem->{TotalWidth}\n";
+      print "Type Detail: $objItem->{TypeDetail}\n";
+      print "Version: $objItem->{Version}\n";
+      print "\n";
+}

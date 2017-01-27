@@ -1,0 +1,63 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Memory
+### Category3 : 
+### Description : Returns starting and ending addresses for all memory devices installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_MemoryDevice","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Access: $objItem->{Access}\n";
+      print "Additional Error Data: " . join(",", (in $objItem->{AdditionalErrorData})) . "\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Block Size: $objItem->{BlockSize}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Correctable Error: $objItem->{CorrectableError}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Ending Address: $objItem->{EndingAddress}\n";
+      print "Error Access: $objItem->{ErrorAccess}\n";
+      print "Error Address: $objItem->{ErrorAddress}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Data: " . join(",", (in $objItem->{ErrorData})) . "\n";
+      print "Error Data Order: $objItem->{ErrorDataOrder}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Error Granularity: $objItem->{ErrorGranularity}\n";
+      print "Error Info: $objItem->{ErrorInfo}\n";
+      print "Error Methodology: $objItem->{ErrorMethodology}\n";
+      print "Error Resolution: $objItem->{ErrorResolution}\n";
+      print "Error Time: $objItem->{ErrorTime}\n";
+      print "Error Transfer Size: $objItem->{ErrorTransferSize}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Blocks: $objItem->{NumberOfBlocks}\n";
+      print "Other Error Description: $objItem->{OtherErrorDescription}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Purpose: $objItem->{Purpose}\n";
+      print "Starting Address: $objItem->{StartingAddress}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Level Address: $objItem->{SystemLevelAddress}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "\n";
+}

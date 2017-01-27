@@ -1,0 +1,45 @@
+###
+###
+###
+### Category1 : Desktop Management
+### Category2 : Windows and Explorer Settings
+### Category3 : 
+### Description : Lists the current desktop settings on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_Desktop","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Border Width: $objItem->{BorderWidth}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Cool Switch: $objItem->{CoolSwitch}\n";
+      print "Cursor Blink Rate: $objItem->{CursorBlinkRate}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Drag Full Windows: $objItem->{DragFullWindows}\n";
+      print "Grid Granularity: $objItem->{GridGranularity}\n";
+      print "Icon Spacing: $objItem->{IconSpacing}\n";
+      print "Icon Title Face Name: $objItem->{IconTitleFaceName}\n";
+      print "Icon Title Size: $objItem->{IconTitleSize}\n";
+      print "Icon Title Wrap: $objItem->{IconTitleWrap}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Pattern: $objItem->{Pattern}\n";
+      print "ScreenSaver Active: $objItem->{ScreenSaverActive}\n";
+      print "ScreenSaver Executable: $objItem->{ScreenSaverExecutable}\n";
+      print "ScreenSaver Secure: $objItem->{ScreenSaverSecure}\n";
+      print "ScreenSaver Timeout: $objItem->{ScreenSaverTimeout}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Wallpaper: $objItem->{Wallpaper}\n";
+      print "Wallpaper Stretched: $objItem->{WallpaperStretched}\n";
+      print "Wallpaper Tiled: $objItem->{WallpaperTiled}\n";
+      print "\n";
+}

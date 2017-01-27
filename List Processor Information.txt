@@ -1,0 +1,68 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Basic Hardware and Firmware
+### Category3 : 
+### Description : Returns information about the processors installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_Processor","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Address Width: $objItem->{AddressWidth}\n";
+      print "Architecture: $objItem->{Architecture}\n";
+      print "Availability: $objItem->{Availability}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Cpu Status: $objItem->{CpuStatus}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current Clock Speed: $objItem->{CurrentClockSpeed}\n";
+      print "Current Voltage: $objItem->{CurrentVoltage}\n";
+      print "Data Width: $objItem->{DataWidth}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Ext Clock: $objItem->{ExtClock}\n";
+      print "Family: $objItem->{Family}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "L2 Cache Size: $objItem->{L2CacheSize}\n";
+      print "L2 Cache Speed: $objItem->{L2CacheSpeed}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Level: $objItem->{Level}\n";
+      print "Load Percentage: $objItem->{LoadPercentage}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Max Clock Speed: $objItem->{MaxClockSpeed}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Other FamilyD escription: $objItem->{OtherFamilyDescription}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Processor Id: $objItem->{ProcessorId}\n";
+      print "Processor Type: $objItem->{ProcessorType}\n";
+      print "Revision: $objItem->{Revision}\n";
+      print "Role: $objItem->{Role}\n";
+      print "Socket Designation: $objItem->{SocketDesignation}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "Stepping: $objItem->{Stepping}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "Unique Id: $objItem->{UniqueId}\n";
+      print "Upgrade Method: $objItem->{UpgradeMethod}\n";
+      print "Version: $objItem->{Version}\n";
+      print "Voltage Caps: $objItem->{VoltageCaps}\n";
+      print "\n";
+}

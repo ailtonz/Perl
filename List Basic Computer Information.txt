@@ -1,0 +1,78 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Basic Hardware and Firmware
+### Category3 : 
+### Description : Returns basic hardware and configuration information about a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_ComputerSystem","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Admin Password Status: $objItem->{AdminPasswordStatus}\n";
+      print "Automatic Reset Boot Option: $objItem->{AutomaticResetBootOption}\n";
+      print "Automatic Reset Capability: $objItem->{AutomaticResetCapability}\n";
+      print "Boot Option On Limit: $objItem->{BootOptionOnLimit}\n";
+      print "Boot Option On WatchDog: $objItem->{BootOptionOnWatchDog}\n";
+      print "Boot ROM Supported: $objItem->{BootROMSupported}\n";
+      print "Bootup State: $objItem->{BootupState}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Chassis Bootup State: $objItem->{ChassisBootupState}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Current Time Zone: $objItem->{CurrentTimeZone}\n";
+      print "Daylight In Effect: $objItem->{DaylightInEffect}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Domain: $objItem->{Domain}\n";
+      print "Domain Role: $objItem->{DomainRole}\n";
+      print "Enable Daylight Savings Time: $objItem->{EnableDaylightSavingsTime}\n";
+      print "Front Panel Reset Status: $objItem->{FrontPanelResetStatus}\n";
+      print "Infrared Supported: $objItem->{InfraredSupported}\n";
+      print "Initial Load Info: " . join(",", (in $objItem->{InitialLoadInfo})) . "\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Keyboard Password Status: $objItem->{KeyboardPasswordStatus}\n";
+      print "Last Load Info: $objItem->{LastLoadInfo}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Model: $objItem->{Model}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Name Format: $objItem->{NameFormat}\n";
+      print "Network Server Mode Enabled: $objItem->{NetworkServerModeEnabled}\n";
+      print "Number Of Processors: $objItem->{NumberOfProcessors}\n";
+      print "OEM Logo Bitmap: " . join(",", (in $objItem->{OEMLogoBitmap})) . "\n";
+      print "OEM String Array: " . join(",", (in $objItem->{OEMStringArray})) . "\n";
+      print "Part Of Domain: $objItem->{PartOfDomain}\n";
+      print "Pause After Reset: $objItem->{PauseAfterReset}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "PowerOn Password Status: $objItem->{PowerOnPasswordStatus}\n";
+      print "Power State: $objItem->{PowerState}\n";
+      print "Power Supply State: $objItem->{PowerSupplyState}\n";
+      print "Primary Owner Contact: $objItem->{PrimaryOwnerContact}\n";
+      print "Primary Owner Name: $objItem->{PrimaryOwnerName}\n";
+      print "Reset Capability: $objItem->{ResetCapability}\n";
+      print "Reset Count: $objItem->{ResetCount}\n";
+      print "Reset Limit: $objItem->{ResetLimit}\n";
+      print "Roles: " . join(",", (in $objItem->{Roles})) . "\n";
+      print "Status: $objItem->{Status}\n";
+      print "Support Contact Description: " . join(",", (in $objItem->{SupportContactDescription})) . "\n";
+      print "System Startup Delay: $objItem->{SystemStartupDelay}\n";
+      print "System Startup Options: " . join(",", (in $objItem->{SystemStartupOptions})) . "\n";
+      print "System Startup Setting: $objItem->{SystemStartupSetting}\n";
+      print "System Type: $objItem->{SystemType}\n";
+      print "Thermal State: $objItem->{ThermalState}\n";
+      print "Total Physical Memory: $objItem->{TotalPhysicalMemory}\n";
+      print "User Name: $objItem->{UserName}\n";
+      print "WakeUp Type: $objItem->{WakeUpType}\n";
+      print "Workgroup: $objItem->{Workgroup}\n";
+      print "\n";
+}

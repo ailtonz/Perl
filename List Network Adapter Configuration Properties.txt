@@ -1,0 +1,84 @@
+###
+###
+###
+### Category1 : Networking
+### Category2 : Client-Side Management
+### Category3 : Retrieving Network Configuration Information
+### Description : Lists configuration information for all the network adapters installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_NetworkAdapterConfiguration","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Arp Always Source Route: $objItem->{ArpAlwaysSourceRoute}\n";
+      print "Arp Use EtherSNAP: $objItem->{ArpUseEtherSNAP}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Database Path: $objItem->{DatabasePath}\n";
+      print "Dead GW Detect Enabled: $objItem->{DeadGWDetectEnabled}\n";
+      print "Default IP Gateway: " . join(",", (in $objItem->{DefaultIPGateway})) . "\n";
+      print "Default TOS: $objItem->{DefaultTOS}\n";
+      print "Default TTL: $objItem->{DefaultTTL}\n";
+      print "Description: $objItem->{Description}\n";
+      print "DHCP Enabled: $objItem->{DHCPEnabled}\n";
+      print "DHCP Lease Expires: $objItem->{DHCPLeaseExpires}\n";
+      print "DHCP Lease Obtained: $objItem->{DHCPLeaseObtained}\n";
+      print "DHCP Server: $objItem->{DHCPServer}\n";
+      print "DNS Domain: $objItem->{DNSDomain}\n";
+      print "DNS Domain Suffix Search Order: " . join(",", (in $objItem->{DNSDomainSuffixSearchOrder})) . "\n";
+      print "DNS Enabled For WINS Resolution: $objItem->{DNSEnabledForWINSResolution}\n";
+      print "DNS Host Name: $objItem->{DNSHostName}\n";
+      print "DNS Server Search Order: " . join(",", (in $objItem->{DNSServerSearchOrder})) . "\n";
+      print "Domain DNS Registration Enabled: $objItem->{DomainDNSRegistrationEnabled}\n";
+      print "Forward Buffer Memory: $objItem->{ForwardBufferMemory}\n";
+      print "Full DNS Registration Enabled: $objItem->{FullDNSRegistrationEnabled}\n";
+      print "Gateway Cost Metric: " . join(",", (in $objItem->{GatewayCostMetric})) . "\n";
+      print "IGMP Level: $objItem->{IGMPLevel}\n";
+      print "Index: $objItem->{Index}\n";
+      print "IP Address: " . join(",", (in $objItem->{IPAddress})) . "\n";
+      print "IP ConnectionMetric: $objItem->{IPConnectionMetric}\n";
+      print "IP Enabled: $objItem->{IPEnabled}\n";
+      print "IP Filter Security Enabled: $objItem->{IPFilterSecurityEnabled}\n";
+      print "IP Port Security Enabled: $objItem->{IPPortSecurityEnabled}\n";
+      print "IPSec Permit IP Protocols: " . join(",", (in $objItem->{IPSecPermitIPProtocols})) . "\n";
+      print "IPSec Permit TCP Ports: " . join(",", (in $objItem->{IPSecPermitTCPPorts})) . "\n";
+      print "IPSec Permit UDP Ports: " . join(",", (in $objItem->{IPSecPermitUDPPorts})) . "\n";
+      print "IP Subnet: " . join(",", (in $objItem->{IPSubnet})) . "\n";
+      print "IP Use Zero Broadcast: $objItem->{IPUseZeroBroadcast}\n";
+      print "IPX Address: $objItem->{IPXAddress}\n";
+      print "IPX Enabled: $objItem->{IPXEnabled}\n";
+      print "IPX FrameType: " . join(",", (in $objItem->{IPXFrameType})) . "\n";
+      print "IPX Media Type: $objItem->{IPXMediaType}\n";
+      print "IPX Network Number: " . join(",", (in $objItem->{IPXNetworkNumber})) . "\n";
+      print "IPX Virtual Net Number: $objItem->{IPXVirtualNetNumber}\n";
+      print "Keep Alive Interval: $objItem->{KeepAliveInterval}\n";
+      print "Keep Alive Time: $objItem->{KeepAliveTime}\n";
+      print "MAC Address: $objItem->{MACAddress}\n";
+      print "MTU: $objItem->{MTU}\n";
+      print "Num Forward Packets: $objItem->{NumForwardPackets}\n";
+      print "PMTUBH Detect Enabled: $objItem->{PMTUBHDetectEnabled}\n";
+      print "PMTU Discovery Enabled: $objItem->{PMTUDiscoveryEnabled}\n";
+      print "Service Name: $objItem->{ServiceName}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Tcpip Netbios Options: $objItem->{TcpipNetbiosOptions}\n";
+      print "Tcp Max Connect Retransmissions: $objItem->{TcpMaxConnectRetransmissions}\n";
+      print "Tcp Max Data Retransmissions: $objItem->{TcpMaxDataRetransmissions}\n";
+      print "Tcp Num Connections: $objItem->{TcpNumConnections}\n";
+      print "Tcp Use RFC1122 Urgent Pointer: $objItem->{TcpUseRFC1122UrgentPointer}\n";
+      print "Tcp WindowS ize: $objItem->{TcpWindowSize}\n";
+      print "WINS Enable LMHosts Lookup: $objItem->{WINSEnableLMHostsLookup}\n";
+      print "WINS Host Lookup File: $objItem->{WINSHostLookupFile}\n";
+      print "WINS Primary Server: $objItem->{WINSPrimaryServer}\n";
+      print "WINS Scope ID: $objItem->{WINSScopeID}\n";
+      print "WINS Secondary Server: $objItem->{WINSSecondaryServer}\n";
+      print "\n";
+}

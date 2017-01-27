@@ -1,0 +1,57 @@
+###
+###
+###
+### Category1 : Hardware
+### Category2 : Peripherals and Devices
+### Category3 : 
+### Description : Returns information about all the pointing devices (including mice and trackballs) installed on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_PointingDevice","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Availability: $objItem->{Availability}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Config Manager Error Code: $objItem->{ConfigManagerErrorCode}\n";
+      print "Config Manager User Config: $objItem->{ConfigManagerUserConfig}\n";
+      print "Creation Class Name: $objItem->{CreationClassName}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Device ID: $objItem->{DeviceID}\n";
+      print "Device Interface: $objItem->{DeviceInterface}\n";
+      print "Double Speed Threshold: $objItem->{DoubleSpeedThreshold}\n";
+      print "Error Cleared: $objItem->{ErrorCleared}\n";
+      print "Error Description: $objItem->{ErrorDescription}\n";
+      print "Handedness: $objItem->{Handedness}\n";
+      print "Hardware Type: $objItem->{HardwareType}\n";
+      print "Inf File Name: $objItem->{InfFileName}\n";
+      print "Inf Section: $objItem->{InfSection}\n";
+      print "Install Date: $objItem->{InstallDate}\n";
+      print "Is Locked: $objItem->{IsLocked}\n";
+      print "Last Error Code: $objItem->{LastErrorCode}\n";
+      print "Manufacturer: $objItem->{Manufacturer}\n";
+      print "Name: $objItem->{Name}\n";
+      print "Number Of Buttons: $objItem->{NumberOfButtons}\n";
+      print "PNP Device ID: $objItem->{PNPDeviceID}\n";
+      print "Pointing Type: $objItem->{PointingType}\n";
+      print "Power Management Capabilities: " . join(",", (in $objItem->{PowerManagementCapabilities})) . "\n";
+      print "Power Management Supported: $objItem->{PowerManagementSupported}\n";
+      print "Quad Speed Threshold: $objItem->{QuadSpeedThreshold}\n";
+      print "Resolution: $objItem->{Resolution}\n";
+      print "Sample Rate: $objItem->{SampleRate}\n";
+      print "Status: $objItem->{Status}\n";
+      print "Status Info: $objItem->{StatusInfo}\n";
+      print "Synch: $objItem->{Synch}\n";
+      print "System Creation Class Name: $objItem->{SystemCreationClassName}\n";
+      print "System Name: $objItem->{SystemName}\n";
+      print "\n";
+}

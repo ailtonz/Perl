@@ -1,0 +1,40 @@
+###
+###
+###
+### Category1 : Terminal Services
+### Category2 : Retrieving Terminal Service Properties
+### Category3 : 
+### Description : Returns information about the Terminal Service client settings and policies configured on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_TSClientSetting","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Audio Mapping: $objItem->{AudioMapping}\n";
+      print "Caption: $objItem->{Caption}\n";
+      print "Clipboard Mapping: $objItem->{ClipboardMapping}\n";
+      print "Color Depth: $objItem->{ColorDepth}\n";
+      print "Color Depth Policy: $objItem->{ColorDepthPolicy}\n";
+      print "COM Port Mapping: $objItem->{COMPortMapping}\n";
+      print "Connect Client Drives At Logon: $objItem->{ConnectClientDrivesAtLogon}\n";
+      print "Connection Policy: $objItem->{ConnectionPolicy}\n";
+      print "Connect Printer At Logon: $objItem->{ConnectPrinterAtLogon}\n";
+      print "Default To Client Printer: $objItem->{DefaultToClientPrinter}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Drive Mapping: $objItem->{DriveMapping}\n";
+      print "LPT Port Mapping: $objItem->{LPTPortMapping}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "Terminal Name: $objItem->{TerminalName}\n";
+      print "Windows Printer Mapping: $objItem->{WindowsPrinterMapping}\n";
+      print "\n";
+}

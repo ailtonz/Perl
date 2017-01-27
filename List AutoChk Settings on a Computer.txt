@@ -1,0 +1,28 @@
+###
+###
+###
+### Category1 : Storage
+### Category2 : Disk Drives and Volumes
+### Category3 : Physical and Logical Disks
+### Description : Lists information about how Autochk has been configured on a computer.
+###
+###
+###
+use Win32::OLE('in');
+use constant wbemFlagReturnImmediately => 0x10;
+use constant wbemFlagForwardOnly => 0x20;
+
+$computer = ".";
+$objWMIService = Win32::OLE->GetObject
+    ("winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+$colItems = $objWMIService->ExecQuery
+    ("SELECT * FROM Win32_AutochkSetting","WQL",wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+foreach my $objItem (in $colItems)
+{
+      print "Caption: $objItem->{Caption}\n";
+      print "Description: $objItem->{Description}\n";
+      print "Setting ID: $objItem->{SettingID}\n";
+      print "User Input Delay: $objItem->{UserInputDelay}\n";
+      print "\n";
+}
