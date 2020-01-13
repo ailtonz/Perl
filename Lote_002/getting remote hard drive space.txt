@@ -1,0 +1,211 @@
+#require 'subrotinas.pl';
+use strict;
+use Win32::EventLog;
+use Win32::EventLog::Message;
+
+my $dolar = "\$";
+my $interval=300;
+my $arq_switch = "\\\\setaradm02\\d" . $dolar . "\\Aplic\\Setar\\Monitoracao_Discos\\discos_01.txt";
+my $SERVICE_NAME = "Monitoracao Discos";
+Win32::EventLog::Message::RegisterSource( 'System', $SERVICE_NAME );
+
+while (1) {
+  ReportInfo ("Iniciando ciclo: Coletando informacoes de discos");
+  open(READ,"$arq_switch") || ReportWarn ("Nao consigo abrir $arq_switch!");
+  while (<READ>) {
+    chomp;
+    my $arquivo = $_;
+#    print "Passei $arquivo\n";
+    my $comando = get_disk_data($arquivo);
+   }
+  close (READ);
+  sleep( $interval - time() % $interval );
+}
+#------------------------------------------
+sub get_disk_data {
+use Win32;
+use Win32::AdminMisc;
+use RRDs;
+use Win32::EventLog;
+use Win32::EventLog::Message;
+
+use strict;
+
+my ($hostname) = @_;
+my $host = "\\\\" . $hostname;
+my $SERVICE_NAME = "Monitoracao Discos";
+my $Thresh1 = 15;
+my $Thresh2 = 10;
+my $Thresh3 = 5;
+my %Drive;
+my $barra = "\\";
+my $dolar = '$';
+my $Caminho = "\\\\setaradm02\\e" . '$' . "\\Logs_Discos\\";
+my $Threshmsg = 0;
+my @Threshmsg = ('','15','10','5');
+
+my $rrd = $hostname ;   #Nome do arquivo de log
+$rrd =~ s/\Q$barra\E/_/;
+$rrd =~ s/\Q$dolar\E/_/;
+$rrd = $Caminho . $rrd . ".rrd";   #Nome do arquivo de log
+
+($Drive{$hostname}->{Size}, $Drive{$hostname}->{Free}) =
+Win32::AdminMisc::GetDriveSpace($host);
+
+my $time = time;
+my $capacidade = $Drive{$hostname}->{Size};
+my $livre = $Drive{$hostname}->{Free};
+my $usado = $capacidade - $livre;
+if ($capacidade 
+> 0) {
+
+   my $percent = ($livre * 100)/$capacidade;
+   if ($percent <= $Thresh1) {$Threshmsg = $Threshmsg +1;}
+   if ($percent <= $Thresh2) {$Threshmsg = $Threshmsg +1;}
+   if ($percent <= $Thresh3) {$Threshmsg = $Threshmsg +1;}
+   my $msg = @Threshmsg[$Threshmsg] . '%' ;
+#   $^A='';
+#   formline ("@###,###,###,###", $livre);
+#   my $livreimp = $^A;
+   my $livreimp = $livre;
+   1 while $livreimp =~ s/(.*\d)(\d\d\d)/$1,$2/;
+
+   if ($Threshmsg 
+> 0) { ReportWarn ("ATENCAO: $host tem menos de $msg de
+
+espaco livre: $livreimp bytes livres");}
+}
+else {
+   ReportWarn("$host retornou que sua capacidade de disco eh 0.
+Investigue.");
+}
+#print "$hostname -> Livre: $livre  -> Total: $capacidade  ->Usado:
+$usado\n";
+
+RRDs::update ("$rrd", "$time:$capacidade:$usado");
+my $ERR=RRDs::error;
+ReportError ("ERROR ao atualizar $rrd: $ERR ") if $ERR;
+return ($hostname);
+}
+sub ReportError
+{
+    my( $Message) = @_;
+    return( Report( $Message,
+                    $SERVICE_NAME,
+                    EVENTLOG_ERROR_TYPE ) );
+}
+
+sub ReportWarn
+{
+    my( $Message ) = @_;
+    return( Report( $Message,
+                    $SERVICE_NAME,
+                    EVENTLOG_WARNING_TYPE ) );
+}
+
+sub ReportInfo
+{
+    my( $Message) = @_;
+    return( Report( $Message,
+                    $SERVICE_NAME,
+                    EVENTLOG_INFORMATION_TYPE ) );
+}
+
+sub Report
+{
+    my( $Message, $Log, $Type ) = @_;
+
+    if( my $EventLog = new Win32::EventLog( $Log ) )
+    {
+        $EventLog->Report(
+            {
+                Message => $Message,
+                Strings => $Message,
+                EventID => 0,
+                EventType => $Type,
+                Category    => undef,
+            }
+        );
+        $EventLog->Close();
+    }
+}
+
+
+sub GetError
+{
+    return( Win32::FormatMessage( Win32::Daemon::GetLastError() ) );
+}
+
+
+
+
+
+Cheers,
+/Luiz George Ramsey Barreiros
+Analista Assistente de Informatica
+GEPRO NRT 1-RJ/SETAR
+Banco do Brasil S.A.
+
+
+
+                                                                                                                   
+                                                                                                                   
+                                                                 Para:   "Sumit" <sumi...@hotmail.com>,          
+               "John Giordano" <isa...@netos.com>                 "win32-admin"                                     
+               Enviado Por:                                      <perl...@listserv.ActiveState.com>       
+               perl...@listserv.ActiveStat        cc:                                               
+               e.com                                             Assunto:     RE: getting remote hard drive space  
+                                                                                                                   
+                                                                                                                   
+               15/10/2003 16:01 MST                                                                                
+                                                                                                                   
+                                                                                                                   
+
+
+
+
+hey->
+
+i do it like this:
+
+@GeometrySahara = Win32::AdminMisc::GetDriveGeometry("g:\\");
+
+print "Sahara E Drive:\n\n";
+print "Sectors per cluster: $GeometrySahara[0]\n";
+print "Bytes per Sector:    $GeometrySahara[1]\n";
+print "Free clusters:       $GeometrySahara[2]\n";
+print "Total clusters:      $GeometrySahara[3]\n";
+print "Total Drive Size:    $SaharaTotal\n";
+print "Total Free Space:    $SaharaFree\n";
+
+hope that helps
+jg
+
+
+-----Original Message-----
+From:           Sumit [mailto:sumi...@hotmail.com]
+Sent:           Wed 10/15/2003 2:45 PM
+To:        win32-admin
+Cc:
+Subject:        getting remote hard drive space
+Hi All,
+I am using the Win32::AdminMisc module to build some inventory information
+within our network. I am trying
+the GetDriveSpace function to get the size of remote hard drives. The
+documentation of the module says that
+if a UNC is used instead of local drive then a backslash should be used at
+the end. Here is what I am using
+
+$drive = "\\\\$server\\C\$\\";
+{($FixedDrives{$drive}->{Size}, $FixedDrives{$drive}->{Free}) =
+Win32::AdminMisc::GetDriveSpace($drive);}
+
+And on running this I get undefined value. Any idea whats wrong with the
+code or has anyone encountered this
+before. I got the module from Jenda Krynick's ppm repository.
+
+Also is there any way to find out the number of fixed drives on a remote
+machine?
+
+Thanks in advance,
+Sumit.

@@ -1,0 +1,20 @@
+[% USE Latex %]
+[% FILTER latex ("grupos.pdf") -%]
+\documentclass[10pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{color}
+\title{Grupos de usuarios Perl Brasileiros}
+\author{Joenio Marques da Costa}
+\begin{document}
+
+\maketitle
+[% FOREACH grupo = grupos %]
+   \section{[% grupo.nome %]}
+   \begin{itemize}
+   \item \textbf{lider:} [% grupo.lider %]
+   \item \textbf{link:} \textcolor{blue}{http://[% grupo.link %]}
+   \end{itemize}
+[% END %]
+
+\end{document}
+[% END -%]
